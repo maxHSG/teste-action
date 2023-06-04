@@ -24,17 +24,21 @@ async function run(): Promise<void> {
 
       core.info(`Conectado no ssh`)
 
-      const {stderr, stdout, code} = await ssh.execCommand(
-        `cd /var/www && git pull origin master && docker compose up -d`
+      const {stderr, code} = await ssh.execCommand(
+        `cd /var/www && git pull origin master && docker compose up -d`,
+        {
+          onStderr(chunk) {
+            core.info(chunk.toString('utf8'))
+          },
+          onStdout(chunk) {
+            core.info(chunk.toString('utf8'))
+          }
+        }
       )
 
       if (code !== 0) {
         throw new Error(stderr)
       }
-
-      core.info(
-        `O comando retornou ${[stderr, stdout].filter(e => e).join('\n')}`
-      )
 
       core.info(`O comando foi executado`)
     }
