@@ -1,37 +1,6 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 7757:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createExecSSH = void 0;
-const node_ssh_1 = __nccwpck_require__(7334);
-const createExecSSH = (crendetials) => (command) => __awaiter(void 0, void 0, void 0, function* () {
-    const ssh = new node_ssh_1.NodeSSH();
-    yield ssh.connect(Object.assign({ readyTimeout: 60 * 1000 }, crendetials));
-    const { stderr, stdout, code } = yield ssh.execCommand(command);
-    if (code === 0) {
-        return stdout;
-    }
-    throw new Error(stderr);
-});
-exports.createExecSSH = createExecSSH;
-
-
-/***/ }),
-
 /***/ 3109:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -78,29 +47,34 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
-const exec_1 = __nccwpck_require__(7757);
+const node_ssh_1 = __nccwpck_require__(7334);
 function run() {
     var _a, e_1, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const sshPassword = core.getInput('ssh-password');
-            const sshPort = Number(core.getInput('ssh-port') || 22);
-            const sshUsername = core.getInput('ssh-username');
+            const password = core.getInput('ssh-password');
+            const port = Number(core.getInput('ssh-port') || 22);
+            const username = core.getInput('ssh-username');
             const hosts = [{ host: '144.217.220.182', name: 'Debian teste' }];
+            const ssh = new node_ssh_1.NodeSSH();
             try {
                 for (var _d = true, hosts_1 = __asyncValues(hosts), hosts_1_1; hosts_1_1 = yield hosts_1.next(), _a = hosts_1_1.done, !_a; _d = true) {
                     _c = hosts_1_1.value;
                     _d = false;
                     const { host, name } = _c;
                     core.debug(`Atualizando o cliente ${name}`);
-                    const execSSH = (0, exec_1.createExecSSH)({
+                    yield ssh.connect({
+                        readyTimeout: 20 * 1000,
                         host,
-                        password: sshPassword,
-                        port: sshPort,
-                        username: sshUsername
+                        username,
+                        port,
+                        password
                     });
-                    const output = yield execSSH(`cd  /var/www && ls`);
-                    core.setOutput('output', output);
+                    const { stderr, stdout } = yield ssh.execCommand(`cd /var/www/ && ls`);
+                    if (stderr) {
+                        throw new Error(stderr === null || stderr === void 0 ? void 0 : stderr.toString());
+                    }
+                    core.setOutput('stdout', stdout);
                 }
             }
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
