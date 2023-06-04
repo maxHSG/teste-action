@@ -71,8 +71,13 @@ function run() {
                         password
                     });
                     core.debug(`Conectado no ssh`);
-                    const { stderr, stdout } = yield ssh.execCommand(`cd /var/www && git pull origin master && docker compose up -d`);
-                    if (stderr) {
+                    const { stderr, stdout, code } = yield ssh.execCommand(`cd /var/www && git pull origin master && docker compose up -d`);
+                    core.setOutput('o comando retornou', {
+                        stderr,
+                        stdout,
+                        code
+                    });
+                    if (code !== 0) {
                         throw new Error(stderr);
                     }
                     core.setOutput('o comando retornou', stdout);
