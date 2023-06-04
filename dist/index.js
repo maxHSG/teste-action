@@ -87,6 +87,9 @@ function run() {
         catch (error) {
             if (error instanceof Error)
                 core.setFailed(error.message);
+            process.exit(core.ExitCode.Failure);
+        }
+        finally {
         }
     });
 }

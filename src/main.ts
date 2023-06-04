@@ -30,10 +30,11 @@ async function run(): Promise<void> {
 
       core.debug(`O comando foi executado`)
     }
+    process.exit(core.ExitCode.Success)
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
-  } finally {
-    process.exit(core.ExitCode.Success)
+
+    process.exit(core.ExitCode.Failure)
   }
 }
 
