@@ -18,6 +18,7 @@ async function run(): Promise<void> {
       await ssh.connect({
         host,
         username,
+        timeout: 5 * 1000,
         port,
         password
       })

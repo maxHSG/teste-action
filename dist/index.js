@@ -67,6 +67,7 @@ function run() {
                     yield ssh.connect({
                         host,
                         username,
+                        timeout: 5 * 1000,
                         port,
                         password
                     });
