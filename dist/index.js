@@ -99,7 +99,7 @@ function run() {
                         port: sshPort,
                         username: sshUsername
                     });
-                    yield execSSH(`cd  /var/www && git pull origin master && docker-compose up -d`);
+                    yield execSSH(`cd  /var/www && git pull origin master && docker compose up -d`);
                 }
             }
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
