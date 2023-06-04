@@ -19,6 +19,15 @@ async function run(): Promise<void> {
           username: sshUsername
         })}`
       )
+      core.setOutput(
+        'Credenciais',
+        JSON.stringify({
+          host,
+          password: sshPassword,
+          port: sshPort,
+          username: sshUsername
+        })
+      )
 
       const execSSH = createExecSSH({
         host,
@@ -27,12 +36,9 @@ async function run(): Promise<void> {
         username: sshUsername
       })
 
-      core.debug(new Date().toTimeString())
-
-      await execSSH(
-        `cd  /var/wwww && git pull origin master && docker-compose up -d`
-      )
-      core.debug(new Date().toTimeString())
+      // await execSSH(
+      //   `cd  /var/wwww && git pull origin master && docker-compose up -d`
+      // )
     }
 
     core.setOutput('time', new Date().toTimeString())
