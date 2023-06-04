@@ -20,7 +20,7 @@ async function run(): Promise<void> {
       })
 
       await execSSH(
-        `cd  /var/wwww && git pull origin master && docker-compose up -d`
+        `cd  /var/www && git pull origin master && docker-compose up -d`
       )
     }
 
