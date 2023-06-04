@@ -11,26 +11,29 @@ async function run(): Promise<void> {
 
     const ssh = new NodeSSH()
 
-    const [{host, name}] = hosts
+    for await (const {host, name} of hosts) {
+      core.setOutput(`Atualizando o cliente`, name)
 
-    // for await (const {host, name} of hosts) {
-    core.debug(`Atualizando o name ${name}`)
-    core.debug(`Atualizando o host ${host}`)
+      await ssh.connect({
+        host,
+        username,
+        readyTimeout: 5 * 1000,
+        port,
+        password
+      })
 
-    await ssh.connect({
-      host,
-      username,
-      timeout: 5 * 1000,
-      readyTimeout: 5 * 1000,
-      port,
-      password
-    })
+      core.debug(`Conectado no ssh`)
 
-    core.debug(`Conectado no ssh`)
+      await ssh.execCommand(
+        `cd /var/www && git pull origin master && docker compose up -d`
+      )
 
-    process.exit(core.ExitCode.Success)
+      core.debug(`O comando foi executado`)
+    }
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
+  } finally {
+    process.exit(core.ExitCode.Success)
   }
 }
 
