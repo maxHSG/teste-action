@@ -1,14 +1,29 @@
 import * as core from '@actions/core'
 import {wait} from './wait'
+import {createExecSSH} from './exec'
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
+    const sshPassword = core.getInput('ssh-password')
+    const sshPort = Number(core.getInput('ssh-port') || 22)
+    const sshUsername = core.getInput('ssh-username')
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    const hosts = [{host: '144.217.220.182 '}]
+
+    for await (const {host} of hosts) {
+      const execSSH = createExecSSH({
+        host,
+        password: sshPassword,
+        port: sshPort,
+        username: sshUsername
+      })
+
+      core.debug(new Date().toTimeString())
+      await execSSH(
+        `cd  /var/wwww && git pull origin master && docker-compose up -d`
+      )
+      core.debug(new Date().toTimeString())
+    }
 
     core.setOutput('time', new Date().toTimeString())
   } catch (error) {
