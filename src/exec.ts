@@ -1,7 +1,5 @@
 import {NodeSSH} from 'node-ssh'
 
-const password = process.env.PASSWORD
-
 export const createExecSSH =
   (crendetials: {
     host: string
@@ -9,25 +7,19 @@ export const createExecSSH =
     port: number
     password: string
   }) =>
-  (command: string): Promise<string> =>
-    new Promise((resolve, reject) => {
-      const ssh = new NodeSSH()
-      ssh
-        .connect({
-          readyTimeout: 60 * 1000,
-          ...crendetials
-        })
-        .then(async () => {
-          const {stderr, stdout, code} = await ssh.execCommand(command)
+  async (command: string): Promise<string> => {
+    const ssh = new NodeSSH()
 
-          if (code === 0) {
-            return resolve(stdout)
-          }
-
-          if (stdout) {
-            resolve(stdout)
-          } else if (stderr) {
-            reject(stderr)
-          }
-        })
+    await ssh.connect({
+      readyTimeout: 60 * 1000,
+      ...crendetials
     })
+
+    const {stderr, stdout, code} = await ssh.execCommand(command)
+
+    if (code === 0) {
+      return stdout
+    }
+
+    throw new Error(stderr)
+  }

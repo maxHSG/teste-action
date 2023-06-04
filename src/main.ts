@@ -1,6 +1,5 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
-import {createExecSSH} from './exec'
+// import {createExecSSH} from './exec'
 
 async function run(): Promise<void> {
   try {
@@ -12,7 +11,7 @@ async function run(): Promise<void> {
 
     for await (const {host} of hosts) {
       core.debug(
-        `Credenciais ${JSON.stringify({
+        `Credenciais[debug] ${JSON.stringify({
           host,
           password: sshPassword,
           port: sshPort,
@@ -20,7 +19,7 @@ async function run(): Promise<void> {
         })}`
       )
       core.setOutput(
-        'Credenciais',
+        'Credenciais[output]',
         JSON.stringify({
           host,
           password: sshPassword,
@@ -29,12 +28,12 @@ async function run(): Promise<void> {
         })
       )
 
-      const execSSH = createExecSSH({
-        host,
-        password: sshPassword,
-        port: sshPort,
-        username: sshUsername
-      })
+      // const execSSH = createExecSSH({
+      //   host,
+      //   password: sshPassword,
+      //   port: sshPort,
+      //   username: sshUsername
+      // })
 
       // await execSSH(
       //   `cd  /var/wwww && git pull origin master && docker-compose up -d`
