@@ -19,7 +19,9 @@ async function run(): Promise<void> {
         username: sshUsername
       })
 
-      await execSSH(`cd  /var/www && git pull origin master`)
+      const output = await execSSH(`cd  /var/www && ls`)
+
+      core.setOutput('output', output)
       // await execSSH(
       //   `cd  /var/www && git pull origin master && docker compose up -d`
       // )

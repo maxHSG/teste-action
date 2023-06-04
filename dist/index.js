@@ -99,7 +99,8 @@ function run() {
                         port: sshPort,
                         username: sshUsername
                     });
-                    yield execSSH(`cd  /var/www && git pull origin master`);
+                    const output = yield execSSH(`cd  /var/www && ls`);
+                    core.setOutput('output', output);
                 }
             }
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
