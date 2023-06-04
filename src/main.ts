@@ -38,7 +38,7 @@ async function run(): Promise<void> {
         throw new Error(stderr)
       }
 
-      core.setOutput('o comando retornou', stdout)
+      core.setOutput('o comando retornou', {stdout, stderr})
 
       core.debug(`O comando foi executado`)
     }
