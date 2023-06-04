@@ -11,32 +11,35 @@ async function run(): Promise<void> {
 
     const ssh = new NodeSSH()
 
-    for await (const {host, name} of hosts) {
-      core.debug(`Atualizando o cliente ${name}`)
-      core.debug(`Atualizando o cliente ${host}`)
+    const [{host, name}] = hosts
 
-      await ssh.connect({
-        host,
-        username,
-        timeout: 5 * 1000,
-        port,
-        password
-      })
+    // for await (const {host, name} of hosts) {
+    core.debug(`Atualizando o name ${name}`)
+    core.debug(`Atualizando o host ${host}`)
 
-      core.debug(`Conectado no ssh`)
+    await ssh.connect({
+      host,
+      username,
+      timeout: 5 * 1000,
+      readyTimeout: 5 * 1000,
+      port,
+      password
+    })
 
-      // const {stderr, stdout} = await ssh.execCommand(`cd /var/www/ && ls`)
+    core.debug(`Conectado no ssh`)
 
-      // if (stderr) {
-      //   throw new Error(stderr?.toString())
-      // }
+    // const {stderr, stdout} = await ssh.execCommand(`cd /var/www/ && ls`)
 
-      // core.setOutput('stdout', stdout)
+    // if (stderr) {
+    //   throw new Error(stderr?.toString())
+    // }
 
-      // await execSSH(
-      //   `cd  /var/www && git pull origin master && docker compose up -d`
-      // )
-    }
+    // core.setOutput('stdout', stdout)
+
+    // await execSSH(
+    //   `cd  /var/www && git pull origin master && docker compose up -d`
+    // )
+    // }
 
     core.setOutput('time', new Date().toTimeString())
   } catch (error) {

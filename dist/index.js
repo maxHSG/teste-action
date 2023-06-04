@@ -38,18 +38,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __asyncValues = (this && this.__asyncValues) || function (o) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator], i;
-    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
-    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
-    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const node_ssh_1 = __nccwpck_require__(7334);
 function run() {
-    var _a, e_1, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const password = core.getInput('ssh-password');
@@ -57,30 +49,28 @@ function run() {
             const username = core.getInput('ssh-username');
             const hosts = [{ host: '144.217.220.182', name: 'Debian teste' }];
             const ssh = new node_ssh_1.NodeSSH();
-            try {
-                for (var _d = true, hosts_1 = __asyncValues(hosts), hosts_1_1; hosts_1_1 = yield hosts_1.next(), _a = hosts_1_1.done, !_a; _d = true) {
-                    _c = hosts_1_1.value;
-                    _d = false;
-                    const { host, name } = _c;
-                    core.debug(`Atualizando o cliente ${name}`);
-                    core.debug(`Atualizando o cliente ${host}`);
-                    yield ssh.connect({
-                        host,
-                        username,
-                        timeout: 5 * 1000,
-                        port,
-                        password
-                    });
-                    core.debug(`Conectado no ssh`);
-                }
-            }
-            catch (e_1_1) { e_1 = { error: e_1_1 }; }
-            finally {
-                try {
-                    if (!_d && !_a && (_b = hosts_1.return)) yield _b.call(hosts_1);
-                }
-                finally { if (e_1) throw e_1.error; }
-            }
+            const [{ host, name }] = hosts;
+            // for await (const {host, name} of hosts) {
+            core.debug(`Atualizando o name ${name}`);
+            core.debug(`Atualizando o host ${host}`);
+            yield ssh.connect({
+                host,
+                username,
+                timeout: 5 * 1000,
+                readyTimeout: 5 * 1000,
+                port,
+                password
+            });
+            core.debug(`Conectado no ssh`);
+            // const {stderr, stdout} = await ssh.execCommand(`cd /var/www/ && ls`)
+            // if (stderr) {
+            //   throw new Error(stderr?.toString())
+            // }
+            // core.setOutput('stdout', stdout)
+            // await execSSH(
+            //   `cd  /var/www && git pull origin master && docker compose up -d`
+            // )
+            // }
             core.setOutput('time', new Date().toTimeString());
         }
         catch (error) {
