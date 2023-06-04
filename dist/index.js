@@ -62,16 +62,7 @@ function run() {
                 password
             });
             core.debug(`Conectado no ssh`);
-            // const {stderr, stdout} = await ssh.execCommand(`cd /var/www/ && ls`)
-            // if (stderr) {
-            //   throw new Error(stderr?.toString())
-            // }
-            // core.setOutput('stdout', stdout)
-            // await execSSH(
-            //   `cd  /var/www && git pull origin master && docker compose up -d`
-            // )
-            // }
-            core.setOutput('time', new Date().toTimeString());
+            return;
         }
         catch (error) {
             if (error instanceof Error)
