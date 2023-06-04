@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-// import {createExecSSH} from './exec'
+import {createExecSSH} from './exec'
 
 async function run(): Promise<void> {
   try {
@@ -10,34 +10,18 @@ async function run(): Promise<void> {
     const hosts = [{host: '144.217.220.182'}]
 
     for await (const {host} of hosts) {
-      core.debug(
-        `Credenciais[debug] ${JSON.stringify({
-          host,
-          password: sshPassword,
-          port: sshPort,
-          username: sshUsername
-        })}`
-      )
-      core.setOutput(
-        'Credenciais[output]',
-        JSON.stringify({
-          host,
-          password: sshPassword,
-          port: sshPort,
-          username: sshUsername
-        })
-      )
+      core.setOutput(`Executando o host`, host)
 
-      // const execSSH = createExecSSH({
-      //   host,
-      //   password: sshPassword,
-      //   port: sshPort,
-      //   username: sshUsername
-      // })
+      const execSSH = createExecSSH({
+        host,
+        password: sshPassword,
+        port: sshPort,
+        username: sshUsername
+      })
 
-      // await execSSH(
-      //   `cd  /var/wwww && git pull origin master && docker-compose up -d`
-      // )
+      await execSSH(
+        `cd  /var/wwww && git pull origin master && docker-compose up -d`
+      )
     }
 
     core.setOutput('time', new Date().toTimeString())
