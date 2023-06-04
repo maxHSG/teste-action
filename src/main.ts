@@ -12,7 +12,7 @@ async function run(): Promise<void> {
     const ssh = new NodeSSH()
 
     for await (const {host, name} of hosts) {
-      core.setOutput(`Atualizando o cliente`, name)
+      core.info(`Atualizando o cliente ${name}`)
 
       await ssh.connect({
         host,
@@ -22,7 +22,7 @@ async function run(): Promise<void> {
         password
       })
 
-      core.debug(`Conectado no ssh`)
+      core.info(`Conectado no ssh`)
 
       const {stderr, stdout, code} = await ssh.execCommand(
         `cd /var/www && git pull origin master && docker compose up -d`
@@ -32,12 +32,11 @@ async function run(): Promise<void> {
         throw new Error(stderr)
       }
 
-      core.setOutput(
-        'O comando retornou',
-        [stderr, stdout].filter(e => e).join('\n')
+      core.info(
+        `O comando retornou ${[stderr, stdout].filter(e => e).join('\n')}`
       )
 
-      core.debug(`O comando foi executado`)
+      core.info(`O comando foi executado`)
     }
     process.exit(core.ExitCode.Success)
   } catch (error) {

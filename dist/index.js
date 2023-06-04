@@ -62,7 +62,7 @@ function run() {
                     _c = hosts_1_1.value;
                     _d = false;
                     const { host, name } = _c;
-                    core.setOutput(`Atualizando o cliente`, name);
+                    core.info(`Atualizando o cliente ${name}`);
                     yield ssh.connect({
                         host,
                         username,
@@ -70,13 +70,13 @@ function run() {
                         port,
                         password
                     });
-                    core.debug(`Conectado no ssh`);
+                    core.info(`Conectado no ssh`);
                     const { stderr, stdout, code } = yield ssh.execCommand(`cd /var/www && git pull origin master && docker compose up -d`);
                     if (code !== 0) {
                         throw new Error(stderr);
                     }
-                    core.setOutput('O comando retornou', [stderr, stdout].filter(e => e).join('\n'));
-                    core.debug(`O comando foi executado`);
+                    core.info(`O comando retornou ${[stderr, stdout].filter(e => e).join('\n')}`);
+                    core.info(`O comando foi executado`);
                 }
             }
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
