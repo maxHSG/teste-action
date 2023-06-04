@@ -7,10 +7,10 @@ async function run(): Promise<void> {
     const sshPort = Number(core.getInput('ssh-port') || 22)
     const sshUsername = core.getInput('ssh-username')
 
-    const hosts = [{host: '144.217.220.182'}]
+    const hosts = [{host: '144.217.220.182', name: 'Debian teste'}]
 
-    for await (const {host} of hosts) {
-      core.setOutput(`Executando o host`, host)
+    for await (const {host, name} of hosts) {
+      core.debug(`Atualizando o cliente ${name}`)
 
       const execSSH = createExecSSH({
         host,
@@ -19,9 +19,10 @@ async function run(): Promise<void> {
         username: sshUsername
       })
 
-      await execSSH(
-        `cd  /var/www && git pull origin master && docker compose up -d`
-      )
+      await execSSH(`cd  /var/www && git pull origin master`)
+      // await execSSH(
+      //   `cd  /var/www && git pull origin master && docker compose up -d`
+      // )
     }
 
     core.setOutput('time', new Date().toTimeString())

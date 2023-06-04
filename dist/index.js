@@ -86,20 +86,20 @@ function run() {
             const sshPassword = core.getInput('ssh-password');
             const sshPort = Number(core.getInput('ssh-port') || 22);
             const sshUsername = core.getInput('ssh-username');
-            const hosts = [{ host: '144.217.220.182' }];
+            const hosts = [{ host: '144.217.220.182', name: 'Debian teste' }];
             try {
                 for (var _d = true, hosts_1 = __asyncValues(hosts), hosts_1_1; hosts_1_1 = yield hosts_1.next(), _a = hosts_1_1.done, !_a; _d = true) {
                     _c = hosts_1_1.value;
                     _d = false;
-                    const { host } = _c;
-                    core.setOutput(`Executando o host`, host);
+                    const { host, name } = _c;
+                    core.debug(`Atualizando o cliente ${name}`);
                     const execSSH = (0, exec_1.createExecSSH)({
                         host,
                         password: sshPassword,
                         port: sshPort,
                         username: sshUsername
                     });
-                    yield execSSH(`cd  /var/www && git pull origin master && docker compose up -d`);
+                    yield execSSH(`cd  /var/www && git pull origin master`);
                 }
             }
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
