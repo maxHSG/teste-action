@@ -2,10 +2,15 @@ name: 'Your name here'
 description: 'Provide a description here'
 author: 'Your name or organization here'
 inputs:
-  milliseconds: # change this
+  ssh-port:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'Porta do ssh'
+  ssh-username:
+    required: true
+    description: 'username do ssh'
+  ssh-password:
+    required: true
+    description: 'password do ssh'
 runs:
   using: 'node16'
   main: 'dist/index.js'
