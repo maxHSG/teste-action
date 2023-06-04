@@ -62,7 +62,7 @@ function run() {
                 password
             });
             core.debug(`Conectado no ssh`);
-            return;
+            process.exit(core.ExitCode.Success);
         }
         catch (error) {
             if (error instanceof Error)

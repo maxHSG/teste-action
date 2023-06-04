@@ -28,7 +28,7 @@ async function run(): Promise<void> {
 
     core.debug(`Conectado no ssh`)
 
-    return
+    process.exit(core.ExitCode.Success)
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
