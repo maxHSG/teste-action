@@ -24,9 +24,11 @@ async function run(): Promise<void> {
 
       core.debug(`Conectado no ssh`)
 
-      await ssh.execCommand(
+      const output = await ssh.execCommand(
         `cd /var/www && git pull origin master && docker compose up -d`
       )
+
+      core.setOutput('output', output)
 
       core.debug(`O comando foi executado`)
     }

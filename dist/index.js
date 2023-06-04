@@ -71,7 +71,8 @@ function run() {
                         password
                     });
                     core.debug(`Conectado no ssh`);
-                    yield ssh.execCommand(`cd /var/www && git pull origin master && docker compose up -d`);
+                    const output = yield ssh.execCommand(`cd /var/www && git pull origin master && docker compose up -d`);
+                    core.setOutput('output', output);
                     core.debug(`O comando foi executado`);
                 }
             }
@@ -88,8 +89,6 @@ function run() {
             if (error instanceof Error)
                 core.setFailed(error.message);
             process.exit(core.ExitCode.Failure);
-        }
-        finally {
         }
     });
 }
