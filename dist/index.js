@@ -38,14 +38,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(186));
 const child_process_1 = __nccwpck_require__(81);
 // import {NodeSSH} from 'node-ssh'
+const path_1 = __importDefault(__nccwpck_require__(17));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const output = (0, child_process_1.execSync)('cd assets/js/react && npm run build', {
+            // Define o caminho para o diretório do projeto EasyChannel
+            const easyChannelPath = path_1.default.join(process.cwd(), 'assets', 'js', 'react');
+            // Navega até o diretório do projeto EasyChannel
+            process.chdir(easyChannelPath);
+            // Executa o comando de build
+            const output = (0, child_process_1.execSync)('npm run build', {
                 encoding: 'utf-8'
             });
             core.info(output);

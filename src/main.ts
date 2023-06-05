@@ -1,10 +1,18 @@
 import * as core from '@actions/core'
 import {execSync} from 'child_process'
 // import {NodeSSH} from 'node-ssh'
+import path from 'path'
 
 async function run(): Promise<void> {
   try {
-    const output = execSync('cd assets/js/react && npm run build', {
+    // Define o caminho para o diretório do projeto EasyChannel
+    const easyChannelPath = path.join(process.cwd(), 'assets', 'js', 'react')
+
+    // Navega até o diretório do projeto EasyChannel
+    process.chdir(easyChannelPath)
+
+    // Executa o comando de build
+    const output = execSync('npm run build', {
       encoding: 'utf-8'
     })
 
