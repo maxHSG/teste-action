@@ -45,7 +45,9 @@ const child_process_1 = __nccwpck_require__(81);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const output = (0, child_process_1.execSync)('ls', { encoding: 'utf-8' });
+            const output = (0, child_process_1.execSync)('cd assets/js/react && npm run build', {
+                encoding: 'utf-8'
+            });
             core.info(output);
             // const password = core.getInput('ssh-password')
             // const port = Number(core.getInput('ssh-port') || 22)

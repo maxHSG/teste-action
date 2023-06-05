@@ -4,7 +4,9 @@ import {execSync} from 'child_process'
 
 async function run(): Promise<void> {
   try {
-    const output = execSync('ls', {encoding: 'utf-8'})
+    const output = execSync('cd assets/js/react && npm run build', {
+      encoding: 'utf-8'
+    })
 
     core.info(output)
     // const password = core.getInput('ssh-password')
