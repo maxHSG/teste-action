@@ -1,22 +1,37 @@
 import * as core from '@actions/core'
-import {execSync} from 'child_process'
+// import {execSync} from 'child_process'
 // import {NodeSSH} from 'node-ssh'
 import path from 'path'
-
+import fs from 'fs'
 async function run(): Promise<void> {
   try {
-    // Define o caminho para o diretório do projeto EasyChannel
-    const easyChannelPath = path.join(process.cwd(), 'assets', 'js', 'react')
+    const currentDirectory = process.cwd()
 
-    // Navega até o diretório do projeto EasyChannel
-    process.chdir(easyChannelPath)
-
-    // Executa o comando de build
-    const output = execSync('npm run build', {
-      encoding: 'utf-8'
+    // Lê o conteúdo do diretório
+    const directoryContents = fs.readdirSync(currentDirectory, {
+      withFileTypes: true
     })
 
-    core.info(output)
+    // Filtra apenas os diretórios
+    const directories = directoryContents.filter(dirent => dirent.isDirectory())
+
+    // Lista os diretórios
+    for (const directory of directories) {
+      core.info(path.join(currentDirectory, directory.name))
+    }
+
+    // Define o caminho para o diretório do projeto EasyChannel
+    // const easyChannelPath = path.join(process.cwd(), 'assets', 'js', 'react')
+
+    // // Navega até o diretório do projeto EasyChannel
+    // process.chdir(easyChannelPath)
+
+    // // Executa o comando de build
+    // const output = execSync('npm run build', {
+    //   encoding: 'utf-8'
+    // })
+
+    // core.info(output)
     // const password = core.getInput('ssh-password')
     // const port = Number(core.getInput('ssh-port') || 22)
     // const username = core.getInput('ssh-username')
