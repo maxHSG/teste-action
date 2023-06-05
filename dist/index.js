@@ -50,17 +50,15 @@ const fs_1 = __importDefault(__nccwpck_require__(147));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const currentDirectory = process.cwd();
             // Lê o conteúdo do diretório
-            const directoryContents = fs_1.default.readdirSync(currentDirectory, {
-                withFileTypes: true
-            });
-            // Filtra apenas os diretórios
-            const directories = directoryContents.filter(dirent => dirent.isDirectory());
-            // Lista os diretórios
-            for (const directory of directories) {
-                core.info(path_1.default.join(currentDirectory, directory.name));
+            const easyChannelPath = path_1.default.join(process.cwd());
+            // Lê o conteúdo da pasta
+            const folderContents = fs_1.default.readdirSync(easyChannelPath);
+            // Lista os arquivos
+            for (const file of folderContents) {
+                core.info(path_1.default.join(easyChannelPath, file));
             }
+            core.info('Aqruivos lidos com sucesso');
             // Define o caminho para o diretório do projeto EasyChannel
             // const easyChannelPath = path.join(process.cwd(), 'assets', 'js', 'react')
             // // Navega até o diretório do projeto EasyChannel

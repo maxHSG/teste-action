@@ -5,20 +5,17 @@ import path from 'path'
 import fs from 'fs'
 async function run(): Promise<void> {
   try {
-    const currentDirectory = process.cwd()
-
     // Lê o conteúdo do diretório
-    const directoryContents = fs.readdirSync(currentDirectory, {
-      withFileTypes: true
-    })
+    const easyChannelPath = path.join(process.cwd())
 
-    // Filtra apenas os diretórios
-    const directories = directoryContents.filter(dirent => dirent.isDirectory())
+    // Lê o conteúdo da pasta
+    const folderContents = fs.readdirSync(easyChannelPath)
 
-    // Lista os diretórios
-    for (const directory of directories) {
-      core.info(path.join(currentDirectory, directory.name))
+    // Lista os arquivos
+    for (const file of folderContents) {
+      core.info(path.join(easyChannelPath, file))
     }
+    core.info('Aqruivos lidos com sucesso')
 
     // Define o caminho para o diretório do projeto EasyChannel
     // const easyChannelPath = path.join(process.cwd(), 'assets', 'js', 'react')
