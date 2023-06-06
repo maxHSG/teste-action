@@ -64,7 +64,7 @@ function run() {
             const key = 'react_build';
             const cacheKey = yield cache.restoreCache(paths, key);
             if (!cacheKey) {
-                const output = (0, child_process_1.execSync)(`cd assets/js/react && npm run build`);
+                const output = (0, child_process_1.execSync)(`yarn && cd assets/js/react && npm run build`);
                 core.info(output.toString('utf-8'));
                 yield cache.saveCache(paths, key);
             }

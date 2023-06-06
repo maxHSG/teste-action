@@ -22,7 +22,7 @@ async function run(): Promise<void> {
     const cacheKey = await cache.restoreCache(paths, key)
 
     if (!cacheKey) {
-      const output = execSync(`cd assets/js/react && npm run build`)
+      const output = execSync(`yarn && cd assets/js/react && npm run build`)
 
       core.info(output.toString('utf-8'))
 
