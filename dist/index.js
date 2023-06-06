@@ -50,10 +50,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
+const cache = __importStar(__nccwpck_require__(7799));
 const child_process_1 = __nccwpck_require__(2081);
 const node_ssh_1 = __nccwpck_require__(7334);
 const path_1 = __importDefault(__nccwpck_require__(1017));
-const cache_1 = __importDefault(__nccwpck_require__(7799));
 function run() {
     var _a, e_1, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
@@ -62,11 +62,11 @@ function run() {
             const reactBuildPath = path_1.default.join(process.cwd(), 'assets', 'js', 'react', 'dist');
             const paths = ['assets/js/react/dist'];
             const key = 'react_build';
-            const cacheKey = yield cache_1.default.restoreCache(paths, key);
+            const cacheKey = yield cache.restoreCache(paths, key);
             if (!cacheKey) {
                 const output = (0, child_process_1.execSync)(`cd assets/js/react && npm run build`);
                 core.info(output.toString('utf-8'));
-                yield cache_1.default.saveCache(paths, key);
+                yield cache.saveCache(paths, key);
             }
             // Navega até o diretório do projeto EasyChannel
             const password = core.getInput('ssh-password');

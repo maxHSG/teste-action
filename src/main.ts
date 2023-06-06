@@ -1,8 +1,8 @@
 import * as core from '@actions/core'
+import * as cache from '@actions/cache'
 import {execSync} from 'child_process'
 import {NodeSSH} from 'node-ssh'
 import path from 'path'
-import cache from '@actions/cache'
 
 async function run(): Promise<void> {
   try {
