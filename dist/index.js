@@ -43,31 +43,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(186));
-// import {execSync} from 'child_process'
+const child_process_1 = __nccwpck_require__(81);
 // import {NodeSSH} from 'node-ssh'
 const path_1 = __importDefault(__nccwpck_require__(17));
-const fs_1 = __importDefault(__nccwpck_require__(147));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            // Lê o conteúdo do diretório
-            const easyChannelPath = path_1.default.join(process.cwd());
-            // Lê o conteúdo da pasta
-            const folderContents = fs_1.default.readdirSync(easyChannelPath);
-            // Lista os arquivos
-            for (const file of folderContents) {
-                core.info(path_1.default.join(easyChannelPath, file));
-            }
-            core.info('Aqruivos lidos com sucesso');
-            // Define o caminho para o diretório do projeto EasyChannel
-            // const easyChannelPath = path.join(process.cwd(), 'assets', 'js', 'react')
-            // // Navega até o diretório do projeto EasyChannel
-            // process.chdir(easyChannelPath)
-            // // Executa o comando de build
-            // const output = execSync('npm run build', {
-            //   encoding: 'utf-8'
-            // })
-            // core.info(output)
+            //Define o caminho para o diretório do projeto EasyChannel
+            const easyChannelPath = path_1.default.join(process.cwd(), 'assets', 'js', 'react');
+            // Navega até o diretório do projeto EasyChannel
+            process.chdir(easyChannelPath);
+            // Executa o comando de build
+            const output = (0, child_process_1.execSync)('npm run build', {
+                encoding: 'utf-8'
+            });
+            core.info(output);
             // const password = core.getInput('ssh-password')
             // const port = Number(core.getInput('ssh-port') || 22)
             // const username = core.getInput('ssh-username')
@@ -2820,6 +2810,14 @@ exports["default"] = _default;
 
 "use strict";
 module.exports = require("assert");
+
+/***/ }),
+
+/***/ 81:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("child_process");
 
 /***/ }),
 
