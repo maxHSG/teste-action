@@ -12,7 +12,7 @@ async function run(): Promise<void> {
     process.chdir(easyChannelPath)
 
     // Executa o comando de build
-    const output = execSync('yarn && npm run build', {
+    const output = execSync('ls', {
       encoding: 'utf-8'
     })
 
