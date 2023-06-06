@@ -1,6 +1,8 @@
 import * as core from '@actions/core'
+import {execSync} from 'child_process'
 import {NodeSSH} from 'node-ssh'
 import path from 'path'
+import cache from '@actions/cache'
 
 async function run(): Promise<void> {
   try {
@@ -12,6 +14,20 @@ async function run(): Promise<void> {
       'react',
       'dist'
     )
+
+    const paths = ['assets/js/react/dist']
+
+    const key = 'react_build'
+
+    const cacheKey = await cache.restoreCache(paths, key)
+
+    if (!cacheKey) {
+      const output = execSync(`cd assets/js/react && npm run build`)
+
+      core.info(output.toString('utf-8'))
+
+      await cache.saveCache(paths, key)
+    }
 
     // Navega até o diretório do projeto EasyChannel
 
@@ -53,6 +69,8 @@ async function run(): Promise<void> {
       }
 
       core.info('Subindo build react')
+
+      core.info(`Arquivo ${reactBuildPath}`)
 
       await ssh.putFile(reactBuildPath, '/var/www/assets/js/react/dist')
 
