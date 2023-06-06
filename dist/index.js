@@ -54,7 +54,7 @@ function run() {
             // Navega até o diretório do projeto EasyChannel
             process.chdir(easyChannelPath);
             // Executa o comando de build
-            const output = (0, child_process_1.execSync)('npm run build', {
+            const output = (0, child_process_1.execSync)('yarn && npm run build', {
                 encoding: 'utf-8'
             });
             core.info(output);
