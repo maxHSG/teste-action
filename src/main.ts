@@ -8,13 +8,15 @@ async function run(): Promise<void> {
   try {
     //Define o caminho para o diretório do projeto EasyChannel
 
-    const reactBuildPath = 'assets/js/react/dist'
+    // const reactBuildPath = 'assets/js/react/dist'
 
     const paths = ['teste.txt']
 
     const key = 'teste3'
 
     const cacheKey = await cache.restoreCache(paths, key)
+
+    core.info(`cacheKey ${cacheKey}`)
 
     if (cacheKey) {
       core.info('Load cache')
@@ -26,11 +28,9 @@ async function run(): Promise<void> {
       core.info(`Teste ${output}`)
     }
 
-    core.info(`cacheKey ${cacheKey}`)
+    // const lsOutput = execSync(`ls ${reactBuildPath}`)
 
-    const lsOutput = execSync(`ls ${reactBuildPath}`)
-
-    core.info(lsOutput.toString('utf-8'))
+    // core.info(lsOutput.toString('utf-8'))
 
     // if (cacheKey) {
     //   core.info('Recuperando arquivo do cache')
