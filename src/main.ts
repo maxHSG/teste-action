@@ -3,6 +3,7 @@ import * as cache from '@actions/cache'
 // import * as toolsCache from '@actions/tool-cache'
 // import {NodeSSH} from 'node-ssh'
 // import path from 'path'
+import os from 'os'
 
 import {exec, execSync} from 'child_process'
 async function run(): Promise<void> {
@@ -18,12 +19,11 @@ async function run(): Promise<void> {
 
     const paths = [reactBuildPath]
 
-    const key = 'npm-master-react-build'
+    const key = `react-dist-${os.platform()}`
 
     const cacheKey = await cache.restoreCache(paths, key, [
-      'npm-',
-      'npm-master-',
-      'npm-master-react-'
+      `react-dist`,
+      `react-dist-${os.platform()}-`
     ])
 
     try {

@@ -38,12 +38,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const cache = __importStar(__nccwpck_require__(7799));
 // import * as toolsCache from '@actions/tool-cache'
 // import {NodeSSH} from 'node-ssh'
 // import path from 'path'
+const os_1 = __importDefault(__nccwpck_require__(2037));
 const child_process_1 = __nccwpck_require__(2081);
 function run() {
     var _a, _b;
@@ -55,11 +59,10 @@ function run() {
             // Use o diretório em cache para outras etapas do fluxo de trabalho
             // ...
             const paths = [reactBuildPath];
-            const key = 'npm-master-react-build';
+            const key = `react-dist-${os_1.default.platform()}`;
             const cacheKey = yield cache.restoreCache(paths, key, [
-                'npm-',
-                'npm-master-',
-                'npm-master-react-'
+                `react-dist`,
+                `react-dist-${os_1.default.platform()}-`
             ]);
             try {
                 const lsOutput = (0, child_process_1.execSync)(`ls ${reactBuildPath}`);
