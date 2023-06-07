@@ -56,7 +56,7 @@ function run() {
             // )
             const paths = ['CI.php'];
             const key = 'teste';
-            const cacheKey = yield cache.restoreCache(paths, key);
+            const cacheKey = yield cache.restoreCache(paths, key, ['teste']);
             core.info(`cacheKey ${cacheKey}`);
             if (cacheKey) {
                 core.info('Recuperando arquivo do cache');

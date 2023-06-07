@@ -17,7 +17,7 @@ async function run(): Promise<void> {
 
     const key = 'teste'
 
-    const cacheKey = await cache.restoreCache(paths, key)
+    const cacheKey = await cache.restoreCache(paths, key, ['teste'])
 
     core.info(`cacheKey ${cacheKey}`)
 
