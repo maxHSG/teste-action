@@ -1,23 +1,24 @@
 import * as core from '@actions/core'
 import * as cache from '@actions/cache'
-// import path from 'path'
+import path from 'path'
 import {execSync} from 'child_process'
 async function run(): Promise<void> {
   try {
     //Define o caminho para o diretório do projeto EasyChannel
-    // const reactBuildPath = path.join(
-    //   process.cwd(),
-    //   'assets',
-    //   'js',
-    //   'react',
-    //   'dist'
-    // )
+    const reactBuildPath = path.join(
+      process.cwd(),
+      'CI.php'
+      //   'assets',
+      //   'js',
+      //   'react',
+      //   'dist'
+    )
 
-    const paths = ['CI.php']
+    const paths = [reactBuildPath]
 
-    const key = 'teste'
+    const key = 'teste2'
 
-    const cacheKey = await cache.restoreCache(paths, key, ['teste'])
+    const cacheKey = await cache.restoreCache(paths, key, [key])
 
     core.info(`cacheKey ${cacheKey}`)
 
@@ -28,7 +29,7 @@ async function run(): Promise<void> {
 
       core.info(lsOutput.toString('utf-8'))
 
-      await cache.saveCache(paths, key, undefined, true)
+      await cache.saveCache(paths, key)
     }
 
     process.exit(core.ExitCode.Success)

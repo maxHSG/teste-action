@@ -38,25 +38,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const cache = __importStar(__nccwpck_require__(7799));
-// import path from 'path'
+const path_1 = __importDefault(__nccwpck_require__(1017));
 const child_process_1 = __nccwpck_require__(2081);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             //Define o caminho para o diretório do projeto EasyChannel
-            // const reactBuildPath = path.join(
-            //   process.cwd(),
+            const reactBuildPath = path_1.default.join(process.cwd(), 'CI.php'
             //   'assets',
             //   'js',
             //   'react',
             //   'dist'
-            // )
-            const paths = ['CI.php'];
-            const key = 'teste';
-            const cacheKey = yield cache.restoreCache(paths, key, ['teste']);
+            );
+            const paths = [reactBuildPath];
+            const key = 'teste2';
+            const cacheKey = yield cache.restoreCache(paths, key, [key]);
             core.info(`cacheKey ${cacheKey}`);
             if (cacheKey) {
                 core.info('Recuperando arquivo do cache');
@@ -64,7 +66,7 @@ function run() {
             else {
                 const lsOutput = (0, child_process_1.execSync)(`ls`);
                 core.info(lsOutput.toString('utf-8'));
-                yield cache.saveCache(paths, key, undefined, true);
+                yield cache.saveCache(paths, key);
             }
             process.exit(core.ExitCode.Success);
         }
