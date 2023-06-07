@@ -1,5 +1,7 @@
 import * as core from '@actions/core'
 import * as cache from '@actions/cache'
+import * as glob from '@actions/glob'
+
 // import * as toolsCache from '@actions/tool-cache'
 // import {NodeSSH} from 'node-ssh'
 // import path from 'path'
@@ -11,16 +13,24 @@ async function run(): Promise<void> {
 
     const reactBuildPath = 'assets/js/react/dist'
 
-    const key = core.getInput('key')
-
     //Define o caminho para o diretório do projeto EasyChannel
 
     // Use o diretório em cache para outras etapas do fluxo de trabalho
     // ...
 
+    const platform = process.env.RUNNER_OS
+
+    const fileHash = await glob.hashFiles(`assets/js/react/yarn-lock.json`)
+
+    const key = `reactbuild-cache-${platform}-yarn-${fileHash}`
+
+    core.info(`Procurando pela key ${key}`)
+
     const paths = [reactBuildPath]
 
     const cacheKey = await cache.restoreCache(paths, key)
+
+    core.info(`cacheKey ${cacheKey}`)
 
     try {
       const lsOutput = execSync(`ls ${reactBuildPath}`)
