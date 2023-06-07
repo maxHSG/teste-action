@@ -38,103 +38,57 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getCacheKey = void 0;
-const os_1 = __importDefault(__nccwpck_require__(2037));
 const core = __importStar(__nccwpck_require__(2186));
 const cache = __importStar(__nccwpck_require__(7799));
 // import * as toolsCache from '@actions/tool-cache'
 // import {NodeSSH} from 'node-ssh'
 // import path from 'path'
 const child_process_1 = __nccwpck_require__(2081);
-function getCacheKey(name, version, manager) {
-    return `${name}-${process.platform}-${os_1.default.arch()}-${manager}-${version}`;
-}
-exports.getCacheKey = getCacheKey;
-// import {exec, execSync} from 'child_process'
 function run() {
+    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             //Define o caminho para o diretório do projeto EasyChannel
-            // const reactBuildPath = 'assets/js/react/dist'
+            const reactBuildPath = 'assets/js/react/dist';
             //Define o caminho para o diretório do projeto EasyChannel
-            // const reactBuildPath = 'assets/js/react/dist'
-            const paths = ['assets/js/react/dist'];
-            const key = 'meu-cache';
-            // Verifica se o cache existe
-            if (cache.isFeatureAvailable()) {
-                core.info('Esta dispoinveil');
-            }
-            else {
-                core.info('Não Esta dispoinveil');
-            }
-            // let cachePath = toolsCache.find('meu-cache-key', '1')
-            if (!(yield cache.restoreCache(paths, key))) {
-                try {
-                    core.info('Iniciando o ls1');
-                    const output = (0, child_process_1.execSync)('ls assets/js/react/dist/');
-                    core.info(output.toString('utf-8'));
-                }
-                catch (error) {
-                    core.info('Erro ao fazer o ls');
-                }
-                // Cache não encontrado, faz a build ou processo necessário
-                // ...
-                (0, child_process_1.execSync)("mkdir -p assets/js/react/dist && echo 'teste' > teste.txt ");
-                try {
-                    core.info('Iniciando o ls2');
-                    const output = (0, child_process_1.execSync)('ls assets/js/react/dist/');
-                    core.info(output.toString('utf-8'));
-                }
-                catch (error) {
-                    core.info('Erro ao fazer o ls');
-                }
-                // Salva o diretório em cache
-                yield cache.saveCache(paths, key);
-            }
-            else {
-                core.info(`Diretório encontrado em cache`);
-            }
             // Use o diretório em cache para outras etapas do fluxo de trabalho
             // ...
-            // const paths = ['teste.txt']
-            // const key = getCacheKey('react', '12', 'dist')
-            // const cacheKey = await cache.restoreCache(paths, key)
-            // core.info(`cacheKey ${cacheKey}`)
-            // if (cacheKey) {
-            //   core.info('Load cache')
-            // } else {
-            //   execSync(`echo "teste" > teste.txt`)
-            //   const output = await cache.saveCache(paths, key)
-            //   core.info(`Teste ${output}`)
-            // }
-            // const lsOutput = execSync(`ls ${reactBuildPath}`)
-            // core.info(lsOutput.toString('utf-8'))
-            // if (cacheKey) {
-            //   core.info('Recuperando arquivo do cache')
-            // } else {
-            //   core.info('Fazendo build...')
-            //   const output = exec(`cd assets/js/react && yarn && npm run build`)
-            //   output.stdout?.on('data', stdout => {
-            //     core.info(stdout)
-            //   })
-            //   output.stderr?.on('data', stdout => {
-            //     core.info(stdout)
-            //   })
-            //   await new Promise(resolve => {
-            //     output.on('close', () => {
-            //       resolve(null)
-            //     })
-            //   })
-            //   core.info('Build termiada')
-            //   const lsOutput = execSync(`ls`)
-            //   core.info(lsOutput.toString('utf-8'))
-            //   await cache.saveCache(paths, key, undefined, true)
-            // }
-            // // Navega até o diretório do projeto EasyChannel
+            const paths = [reactBuildPath];
+            const key = 'build';
+            const cacheKey = yield cache.restoreCache(paths, key);
+            try {
+                const lsOutput = (0, child_process_1.execSync)(`ls ${reactBuildPath}`);
+                core.info(lsOutput.toString('utf-8'));
+            }
+            catch (error) {
+                if (error instanceof Error) {
+                    core.info(error.message);
+                }
+            }
+            if (cacheKey) {
+                core.info('Recuperando arquivo do cache');
+            }
+            else {
+                core.info('Fazendo build...');
+                const output = (0, child_process_1.exec)(`cd assets/js/react && yarn && npm run build`);
+                (_a = output.stdout) === null || _a === void 0 ? void 0 : _a.on('data', stdout => {
+                    core.info(stdout);
+                });
+                (_b = output.stderr) === null || _b === void 0 ? void 0 : _b.on('data', stdout => {
+                    core.info(stdout);
+                });
+                yield new Promise(resolve => {
+                    output.on('close', () => {
+                        resolve(null);
+                    });
+                });
+                core.info('Build termiada');
+                const lsOutput = (0, child_process_1.execSync)(`ls ${reactBuildPath}`);
+                core.info(lsOutput.toString('utf-8'));
+                yield cache.saveCache(paths, key, undefined, true);
+            }
+            // Navega até o diretório do projeto EasyChannel
             // const password = core.getInput('ssh-password')
             // const port = Number(core.getInput('ssh-port') || 22)
             // const username = core.getInput('ssh-username')
