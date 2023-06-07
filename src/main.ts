@@ -20,7 +20,7 @@ async function run(): Promise<void> {
 
     const platform = process.env.RUNNER_OS
 
-    const fileHash = await glob.hashFiles('**/yarn.lock')
+    const fileHash = await glob.hashFiles('assets/js/react')
 
     const key = `reactbuild-cache-${platform}-yarn-${fileHash}`
 
