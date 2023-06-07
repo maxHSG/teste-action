@@ -1,7 +1,7 @@
 import os from 'os'
 import * as core from '@actions/core'
-import * as cache from '@actions/cache'
-
+// import * as cache from '@actions/cache'
+import * as toolsCache from '@actions/tool-cache'
 // import {NodeSSH} from 'node-ssh'
 // import path from 'path'
 import {execSync} from 'child_process'
@@ -20,23 +20,48 @@ async function run(): Promise<void> {
 
     // const reactBuildPath = 'assets/js/react/dist'
 
-    const paths = ['teste.txt']
+    //Define o caminho para o diretório do projeto EasyChannel
 
-    const key = getCacheKey('react', '12', 'dist')
+    // const reactBuildPath = 'assets/js/react/dist'
 
-    const cacheKey = await cache.restoreCache(paths, key)
+    const directoryPath = 'assets/js/react/dist'
 
-    core.info(`cacheKey ${cacheKey}`)
+    // Verifica se o cache existe
+    let cachePath = toolsCache.find(directoryPath, '1')
 
-    if (cacheKey) {
-      core.info('Load cache')
+    if (!cachePath) {
+      // Cache não encontrado, faz a build ou processo necessário
+      // ...
+
+      execSync("mkdir -p assets/js/react/dist && echo 'teste' > teste.txt ")
+
+      // Salva o diretório em cache
+      cachePath = await toolsCache.cacheDir(directoryPath, 'meu-cache-key', '1')
+      core.info(`Diretório salvo em cache: ${cachePath}`)
     } else {
-      execSync(`echo "teste" > teste.txt`)
-
-      const output = await cache.saveCache(paths, key)
-
-      core.info(`Teste ${output}`)
+      core.info(`Diretório encontrado em cache: ${cachePath}`)
     }
+
+    // Use o diretório em cache para outras etapas do fluxo de trabalho
+    // ...
+
+    // const paths = ['teste.txt']
+
+    // const key = getCacheKey('react', '12', 'dist')
+
+    // const cacheKey = await cache.restoreCache(paths, key)
+
+    // core.info(`cacheKey ${cacheKey}`)
+
+    // if (cacheKey) {
+    //   core.info('Load cache')
+    // } else {
+    //   execSync(`echo "teste" > teste.txt`)
+
+    //   const output = await cache.saveCache(paths, key)
+
+    //   core.info(`Teste ${output}`)
+    // }
 
     // const lsOutput = execSync(`ls ${reactBuildPath}`)
 
