@@ -64,7 +64,7 @@ function run() {
             // const reactBuildPath = 'assets/js/react/dist'
             const directoryPath = 'assets/js/react/dist';
             // Verifica se o cache existe
-            let cachePath = toolsCache.find(directoryPath, '1');
+            let cachePath = toolsCache.find('meu-cache-key', '1');
             if (!cachePath) {
                 // Cache não encontrado, faz a build ou processo necessário
                 // ...
