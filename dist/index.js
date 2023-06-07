@@ -62,8 +62,8 @@ function run() {
             //Define o caminho para o diretório do projeto EasyChannel
             const reactBuildPath = path_1.default.join(process.cwd(), 'assets', 'js', 'react', 'dist');
             const paths = ['assets/js/react/dist'];
-            const key = 'react_build';
-            const cacheKey = yield cache.restoreCache(paths, key);
+            const key = 'react-build';
+            const cacheKey = yield cache.restoreCache(paths, key, undefined, undefined, true);
             core.info(`cacheKey ${cacheKey}`);
             if (cacheKey) {
                 core.info('Recuperando arquivo do cache');
@@ -83,9 +83,9 @@ function run() {
                     });
                 });
                 core.info('Build termiada');
-                // const output = execSync(`cd assets/js/react && yarn && npm run build`)
-                // core.info(output.toString('utf-8'))
-                yield cache.saveCache(paths, key);
+                const lsOutput = (0, child_process_1.execSync)(`ls`);
+                core.info(lsOutput.toString('utf-8'));
+                yield cache.saveCache(paths, key, undefined, true);
             }
             // Navega até o diretório do projeto EasyChannel
             const password = core.getInput('ssh-password');
@@ -122,17 +122,9 @@ function run() {
                     core.info(`Arquivo ${reactBuildPath}`);
                     const lsOutput = (0, child_process_1.execSync)(`ls ${reactBuildPath}`);
                     core.info(lsOutput.toString('utf-8'));
-                    const sftp = yield ssh.requestSFTP();
-                    yield new Promise((resolve, reject) => {
-                        sftp.mkdir('/var/www/teste2', error => {
-                            core.info(`Teste ${error}`);
-                            if (error) {
-                                return reject(error);
-                            }
-                            return resolve(true);
-                        });
+                    yield ssh.putDirectory(reactBuildPath, '/var/www/assets/js/react/dist', {
+                        recursive: true
                     });
-                    yield ssh.putFile(reactBuildPath, '/var/www/assets/js/react/dist');
                     core.info('A build do react foi adicionadada com sucesso');
                     core.info(`O comando foi executado`);
                 }

@@ -16,9 +16,15 @@ async function run(): Promise<void> {
 
     const paths = ['assets/js/react/dist']
 
-    const key = 'react_build'
+    const key = 'react-build'
 
-    const cacheKey = await cache.restoreCache(paths, key)
+    const cacheKey = await cache.restoreCache(
+      paths,
+      key,
+      undefined,
+      undefined,
+      true
+    )
 
     core.info(`cacheKey ${cacheKey}`)
 
@@ -43,11 +49,12 @@ async function run(): Promise<void> {
       })
 
       core.info('Build termiada')
-      // const output = execSync(`cd assets/js/react && yarn && npm run build`)
 
-      // core.info(output.toString('utf-8'))
+      const lsOutput = execSync(`ls`)
 
-      await cache.saveCache(paths, key)
+      core.info(lsOutput.toString('utf-8'))
+
+      await cache.saveCache(paths, key, undefined, true)
     }
 
     // Navega até o diretório do projeto EasyChannel
@@ -97,20 +104,9 @@ async function run(): Promise<void> {
 
       core.info(lsOutput.toString('utf-8'))
 
-      const sftp = await ssh.requestSFTP()
-
-      await new Promise((resolve, reject) => {
-        sftp.mkdir('/var/www/teste2', error => {
-          core.info(`Teste ${error}`)
-          if (error) {
-            return reject(error)
-          }
-
-          return resolve(true)
-        })
+      await ssh.putDirectory(reactBuildPath, '/var/www/assets/js/react/dist', {
+        recursive: true
       })
-
-      await ssh.putFile(reactBuildPath, '/var/www/assets/js/react/dist')
 
       core.info('A build do react foi adicionadada com sucesso')
 
