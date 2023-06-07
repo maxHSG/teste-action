@@ -18,9 +18,13 @@ async function run(): Promise<void> {
 
     const paths = [reactBuildPath]
 
-    const key = 'build'
+    const key = 'npm-master-react-build'
 
-    const cacheKey = await cache.restoreCache(paths, key)
+    const cacheKey = await cache.restoreCache(paths, key, [
+      'npm-',
+      'npm-master-',
+      'npm-master-react-'
+    ])
 
     try {
       const lsOutput = execSync(`ls ${reactBuildPath}`)
