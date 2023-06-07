@@ -62,7 +62,7 @@ function run() {
             //Define o caminho para o diretório do projeto EasyChannel
             const reactBuildPath = path_1.default.join(process.cwd(), 'assets', 'js', 'react', 'dist');
             const paths = ['assets/js/react/dist'];
-            const key = 'react-build';
+            const key = 'dist-react-d5ea0750';
             const cacheKey = yield cache.restoreCache(paths, key, undefined, undefined, true);
             core.info(`cacheKey ${cacheKey}`);
             if (cacheKey) {

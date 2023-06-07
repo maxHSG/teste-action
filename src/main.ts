@@ -16,7 +16,7 @@ async function run(): Promise<void> {
 
     const paths = ['assets/js/react/dist']
 
-    const key = 'react-build'
+    const key = 'dist-react-d5ea0750'
 
     const cacheKey = await cache.restoreCache(
       paths,
