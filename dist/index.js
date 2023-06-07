@@ -56,7 +56,7 @@ function run() {
             // Use o diretório em cache para outras etapas do fluxo de trabalho
             // ...
             const platform = process.env.RUNNER_OS;
-            const fileHash = yield glob.hashFiles(`assets/js/react/yarn-lock`);
+            const fileHash = yield glob.hashFiles('**/yarn.lock');
             const key = `reactbuild-cache-${platform}-yarn-${fileHash}`;
             core.info(`Procurando pela key ${key}`);
             const paths = [reactBuildPath];
