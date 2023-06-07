@@ -1,7 +1,7 @@
 import os from 'os'
 import * as core from '@actions/core'
-// import * as cache from '@actions/cache'
-import * as toolsCache from '@actions/tool-cache'
+import * as cache from '@actions/cache'
+// import * as toolsCache from '@actions/tool-cache'
 // import {NodeSSH} from 'node-ssh'
 // import path from 'path'
 import {execSync} from 'child_process'
@@ -24,24 +24,31 @@ async function run(): Promise<void> {
 
     // const reactBuildPath = 'assets/js/react/dist'
 
-    const directoryPath = 'assets/js/react/dist'
+    const paths = ['assets/js/react/dist']
+
+    const key = 'meu-cache'
 
     // Verifica se o cache existe
-    let cachePath = toolsCache.find('meu-cache-key', '1')
 
-    if (!cachePath) {
+    if (cache.isFeatureAvailable()) {
+      core.info('Esta dispoinveil')
+    } else {
+      core.info('Não Esta dispoinveil')
+    }
+
+    // let cachePath = toolsCache.find('meu-cache-key', '1')
+
+    if (!(await cache.restoreCache(paths, key))) {
       // Cache não encontrado, faz a build ou processo necessário
       // ...
 
       execSync("mkdir -p assets/js/react/dist && echo 'teste' > teste.txt ")
 
       // Salva o diretório em cache
-      cachePath = await toolsCache.cacheDir(directoryPath, 'meu-cache-key', '1')
 
-      core.addPath(cachePath)
-      core.info(`Diretório salvo em cache: ${cachePath}`)
+      await cache.saveCache(paths, key)
     } else {
-      core.info(`Diretório encontrado em cache: ${cachePath}`)
+      core.info(`Diretório encontrado em cache`)
     }
 
     // Use o diretório em cache para outras etapas do fluxo de trabalho
