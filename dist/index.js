@@ -50,7 +50,6 @@ const cache = __importStar(__nccwpck_require__(7799));
 const os_1 = __importDefault(__nccwpck_require__(2037));
 const child_process_1 = __nccwpck_require__(2081);
 function run() {
-    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             //Define o caminho para o diretório do projeto EasyChannel
@@ -78,22 +77,22 @@ function run() {
             }
             else {
                 core.info('Fazendo build...');
-                const output = (0, child_process_1.exec)(`cd assets/js/react && yarn && npm run build`);
-                (_a = output.stdout) === null || _a === void 0 ? void 0 : _a.on('data', stdout => {
-                    core.info(stdout);
-                });
-                (_b = output.stderr) === null || _b === void 0 ? void 0 : _b.on('data', stdout => {
-                    core.info(stdout);
-                });
-                yield new Promise(resolve => {
-                    output.on('close', () => {
-                        resolve(null);
-                    });
-                });
+                //   const output = exec(`cd assets/js/react && yarn && npm run build`)
+                //   output.stdout?.on('data', stdout => {
+                //     core.info(stdout)
+                //   })
+                //   output.stderr?.on('data', stdout => {
+                //     core.info(stdout)
+                //   })
+                //   await new Promise(resolve => {
+                //     output.on('close', () => {
+                //       resolve(null)
+                //     })
+                //   })
                 core.info('Build termiada');
                 const lsOutput = (0, child_process_1.execSync)(`ls ${reactBuildPath}`);
                 core.info(lsOutput.toString('utf-8'));
-                yield cache.saveCache(paths, key, undefined, true);
+                //await cache.saveCache(paths, key, undefined, true)
             }
             // Navega até o diretório do projeto EasyChannel
             // const password = core.getInput('ssh-password')
