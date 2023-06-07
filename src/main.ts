@@ -1,8 +1,18 @@
+import os from 'os'
 import * as core from '@actions/core'
 import * as cache from '@actions/cache'
+
 // import {NodeSSH} from 'node-ssh'
 // import path from 'path'
 import {execSync} from 'child_process'
+
+export function getCacheKey(
+  name: string,
+  version: string,
+  manager: string
+): string {
+  return `${name}-${process.platform}-${os.arch()}-${manager}-${version}`
+}
 // import {exec, execSync} from 'child_process'
 async function run(): Promise<void> {
   try {
@@ -12,7 +22,7 @@ async function run(): Promise<void> {
 
     const paths = ['teste.txt']
 
-    const key = 'teste3'
+    const key = getCacheKey('react', '12', 'dist')
 
     const cacheKey = await cache.restoreCache(paths, key)
 
@@ -23,7 +33,7 @@ async function run(): Promise<void> {
     } else {
       execSync(`echo "teste" > teste.txt`)
 
-      const output = await cache.saveCache(paths, key, undefined, true)
+      const output = await cache.saveCache(paths, key)
 
       core.info(`Teste ${output}`)
     }

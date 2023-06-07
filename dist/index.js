@@ -38,12 +38,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getCacheKey = void 0;
+const os_1 = __importDefault(__nccwpck_require__(2037));
 const core = __importStar(__nccwpck_require__(2186));
 const cache = __importStar(__nccwpck_require__(7799));
 // import {NodeSSH} from 'node-ssh'
 // import path from 'path'
 const child_process_1 = __nccwpck_require__(2081);
+function getCacheKey(name, version, manager) {
+    return `${name}-${process.platform}-${os_1.default.arch()}-${manager}-${version}`;
+}
+exports.getCacheKey = getCacheKey;
 // import {exec, execSync} from 'child_process'
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -51,7 +60,7 @@ function run() {
             //Define o caminho para o diretório do projeto EasyChannel
             // const reactBuildPath = 'assets/js/react/dist'
             const paths = ['teste.txt'];
-            const key = 'teste3';
+            const key = getCacheKey('react', '12', 'dist');
             const cacheKey = yield cache.restoreCache(paths, key);
             core.info(`cacheKey ${cacheKey}`);
             if (cacheKey) {
@@ -59,7 +68,7 @@ function run() {
             }
             else {
                 (0, child_process_1.execSync)(`echo "teste" > teste.txt`);
-                const output = yield cache.saveCache(paths, key, undefined, true);
+                const output = yield cache.saveCache(paths, key);
                 core.info(`Teste ${output}`);
             }
             // const lsOutput = execSync(`ls ${reactBuildPath}`)
