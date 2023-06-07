@@ -7,13 +7,24 @@ import {execSync} from 'child_process'
 async function run(): Promise<void> {
   try {
     //Define o caminho para o diretório do projeto EasyChannel
+
     const reactBuildPath = 'assets/js/react/dist'
 
-    const paths = ['assets/js/react/dist']
+    const paths = ['teste.txt']
 
-    const key = 'dist-react-d5ea0750'
+    const key = 'teste3'
 
     const cacheKey = await cache.restoreCache(paths, key)
+
+    if (cacheKey) {
+      core.info('Load cache')
+    } else {
+      execSync(`echo "teste" > teste.txt`)
+
+      const output = await cache.saveCache(paths, key, undefined, true)
+
+      core.info(`Teste ${output}`)
+    }
 
     core.info(`cacheKey ${cacheKey}`)
 

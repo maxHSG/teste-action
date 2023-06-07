@@ -50,9 +50,17 @@ function run() {
         try {
             //Define o caminho para o diretório do projeto EasyChannel
             const reactBuildPath = 'assets/js/react/dist';
-            const paths = ['assets/js/react/dist'];
-            const key = 'dist-react-d5ea0750';
+            const paths = ['teste.txt'];
+            const key = 'teste3';
             const cacheKey = yield cache.restoreCache(paths, key);
+            if (cacheKey) {
+                core.info('Load cache');
+            }
+            else {
+                (0, child_process_1.execSync)(`echo "teste" > teste.txt`);
+                const output = yield cache.saveCache(paths, key, undefined, true);
+                core.info(`Teste ${output}`);
+            }
             core.info(`cacheKey ${cacheKey}`);
             const lsOutput = (0, child_process_1.execSync)(`ls ${reactBuildPath}`);
             core.info(lsOutput.toString('utf-8'));
