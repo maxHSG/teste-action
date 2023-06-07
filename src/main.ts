@@ -21,7 +21,9 @@ async function run(): Promise<void> {
 
     const cacheKey = await cache.restoreCache(paths, key)
 
-    if (!cacheKey) {
+    if (cacheKey) {
+      core.info('Recuperando arquivo do cache')
+    } else {
       const output = execSync(`cd assets/js/react && yarn && npm run build`)
 
       core.info(output.toString('utf-8'))
@@ -71,6 +73,22 @@ async function run(): Promise<void> {
       core.info('Subindo build react')
 
       core.info(`Arquivo ${reactBuildPath}`)
+
+      const lsOutput = execSync(`ls ${reactBuildPath}`)
+
+      core.info(lsOutput.toString('utf-8'))
+
+      const sftp = await ssh.requestSFTP()
+
+      await new Promise((resolve, reject) => {
+        sftp.mkdir('/var/www/teste', error => {
+          if (error) {
+            return reject(error)
+          }
+
+          return resolve(true)
+        })
+      })
 
       await ssh.putFile(reactBuildPath, '/var/www/assets/js/react/dist')
 

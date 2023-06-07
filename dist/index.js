@@ -63,7 +63,10 @@ function run() {
             const paths = ['assets/js/react/dist'];
             const key = 'react_build';
             const cacheKey = yield cache.restoreCache(paths, key);
-            if (!cacheKey) {
+            if (cacheKey) {
+                core.info('Recuperando arquivo do cache');
+            }
+            else {
                 const output = (0, child_process_1.execSync)(`cd assets/js/react && yarn && npm run build`);
                 core.info(output.toString('utf-8'));
                 yield cache.saveCache(paths, key);
@@ -101,6 +104,17 @@ function run() {
                     }
                     core.info('Subindo build react');
                     core.info(`Arquivo ${reactBuildPath}`);
+                    const lsOutput = (0, child_process_1.execSync)(`ls ${reactBuildPath}`);
+                    core.info(lsOutput.toString('utf-8'));
+                    const sftp = yield ssh.requestSFTP();
+                    yield new Promise((resolve, reject) => {
+                        sftp.mkdir('/var/www/teste', error => {
+                            if (error) {
+                                return reject(error);
+                            }
+                            return resolve(true);
+                        });
+                    });
                     yield ssh.putFile(reactBuildPath, '/var/www/assets/js/react/dist');
                     core.info('A build do react foi adicionadada com sucesso');
                     core.info(`O comando foi executado`);
