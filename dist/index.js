@@ -56,7 +56,7 @@ function run() {
             // Use o diretório em cache para outras etapas do fluxo de trabalho
             // ...
             const paths = [reactBuildPath];
-            const cacheKey = yield cache.restoreCache(paths, key, [`react-build`]);
+            const cacheKey = yield cache.restoreCache(paths, key);
             try {
                 const lsOutput = (0, child_process_1.execSync)(`ls ${reactBuildPath}`);
                 core.info(lsOutput.toString('utf-8'));
