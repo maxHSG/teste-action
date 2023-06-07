@@ -51,11 +51,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const cache = __importStar(__nccwpck_require__(7799));
-const child_process_1 = __nccwpck_require__(2081);
 const node_ssh_1 = __nccwpck_require__(7334);
 const path_1 = __importDefault(__nccwpck_require__(1017));
+const child_process_1 = __nccwpck_require__(2081);
 function run() {
     var _a, e_1, _b, _c;
+    var _d, _e;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             //Define o caminho para o diretório do projeto EasyChannel
@@ -63,12 +64,27 @@ function run() {
             const paths = ['assets/js/react/dist'];
             const key = 'react_build';
             const cacheKey = yield cache.restoreCache(paths, key);
+            core.info(`cacheKey ${cacheKey}`);
             if (cacheKey) {
                 core.info('Recuperando arquivo do cache');
             }
             else {
-                const output = (0, child_process_1.execSync)(`cd assets/js/react && yarn && npm run build`);
-                core.info(output.toString('utf-8'));
+                core.info('Fazendo build...');
+                const output = (0, child_process_1.exec)(`cd assets/js/react && yarn && npm run build`);
+                (_d = output.stdout) === null || _d === void 0 ? void 0 : _d.on('data', stdout => {
+                    core.info(stdout);
+                });
+                (_e = output.stderr) === null || _e === void 0 ? void 0 : _e.on('data', stdout => {
+                    core.info(stdout);
+                });
+                yield new Promise(resolve => {
+                    output.on('close', () => {
+                        resolve(null);
+                    });
+                });
+                core.info('Build termiada');
+                // const output = execSync(`cd assets/js/react && yarn && npm run build`)
+                // core.info(output.toString('utf-8'))
                 yield cache.saveCache(paths, key);
             }
             // Navega até o diretório do projeto EasyChannel
@@ -78,9 +94,9 @@ function run() {
             const hosts = [{ host: '144.217.220.179', name: 'Debian teste' }];
             const ssh = new node_ssh_1.NodeSSH();
             try {
-                for (var _d = true, hosts_1 = __asyncValues(hosts), hosts_1_1; hosts_1_1 = yield hosts_1.next(), _a = hosts_1_1.done, !_a; _d = true) {
+                for (var _f = true, hosts_1 = __asyncValues(hosts), hosts_1_1; hosts_1_1 = yield hosts_1.next(), _a = hosts_1_1.done, !_a; _f = true) {
                     _c = hosts_1_1.value;
-                    _d = false;
+                    _f = false;
                     const { host, name } = _c;
                     core.info(`Atualizando o cliente ${name}`);
                     yield ssh.connect({
@@ -108,7 +124,8 @@ function run() {
                     core.info(lsOutput.toString('utf-8'));
                     const sftp = yield ssh.requestSFTP();
                     yield new Promise((resolve, reject) => {
-                        sftp.mkdir('/var/www/teste', error => {
+                        sftp.mkdir('/var/www/teste2', error => {
+                            core.info(`Teste ${error}`);
                             if (error) {
                                 return reject(error);
                             }
@@ -123,7 +140,7 @@ function run() {
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
             finally {
                 try {
-                    if (!_d && !_a && (_b = hosts_1.return)) yield _b.call(hosts_1);
+                    if (!_f && !_a && (_b = hosts_1.return)) yield _b.call(hosts_1);
                 }
                 finally { if (e_1) throw e_1.error; }
             }

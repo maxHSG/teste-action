@@ -1,9 +1,8 @@
 import * as core from '@actions/core'
 import * as cache from '@actions/cache'
-import {execSync} from 'child_process'
 import {NodeSSH} from 'node-ssh'
 import path from 'path'
-
+import {exec, execSync} from 'child_process'
 async function run(): Promise<void> {
   try {
     //Define o caminho para o diretório do projeto EasyChannel
@@ -21,12 +20,32 @@ async function run(): Promise<void> {
 
     const cacheKey = await cache.restoreCache(paths, key)
 
+    core.info(`cacheKey ${cacheKey}`)
+
     if (cacheKey) {
       core.info('Recuperando arquivo do cache')
     } else {
-      const output = execSync(`cd assets/js/react && yarn && npm run build`)
+      core.info('Fazendo build...')
 
-      core.info(output.toString('utf-8'))
+      const output = exec(`cd assets/js/react && yarn && npm run build`)
+
+      output.stdout?.on('data', stdout => {
+        core.info(stdout)
+      })
+      output.stderr?.on('data', stdout => {
+        core.info(stdout)
+      })
+
+      await new Promise(resolve => {
+        output.on('close', () => {
+          resolve(null)
+        })
+      })
+
+      core.info('Build termiada')
+      // const output = execSync(`cd assets/js/react && yarn && npm run build`)
+
+      // core.info(output.toString('utf-8'))
 
       await cache.saveCache(paths, key)
     }
@@ -81,7 +100,8 @@ async function run(): Promise<void> {
       const sftp = await ssh.requestSFTP()
 
       await new Promise((resolve, reject) => {
-        sftp.mkdir('/var/www/teste', error => {
+        sftp.mkdir('/var/www/teste2', error => {
+          core.info(`Teste ${error}`)
           if (error) {
             return reject(error)
           }
