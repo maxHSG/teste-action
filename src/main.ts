@@ -1,15 +1,12 @@
 import * as core from '@actions/core'
 import * as cache from '@actions/cache'
-import * as glob from '@actions/glob'
 import {execSync} from 'child_process'
 
 async function run(): Promise<void> {
   try {
     const platform = process.env.RUNNER_OS
 
-    const fileHash = await glob.hashFiles('assets/js/react')
-
-    const key = `teste-${platform}-yarn-${fileHash}`
+    const key = `teste-${platform}-yarn`
 
     core.info(`Procurando pela key ${key}`)
 

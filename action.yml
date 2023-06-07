@@ -3,13 +3,13 @@ description: 'Provide a description here'
 author: 'Your name or organization here'
 inputs:
   ssh-port:
-    required: true
+    required: false
     description: 'Porta do ssh'
   ssh-username:
-    required: true
+    required: false
     description: 'username do ssh'
   ssh-password:
-    required: true
+    required: false
     description: 'password do ssh'
 runs:
   using: 'node16'
