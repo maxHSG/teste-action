@@ -61,6 +61,7 @@ function run() {
                 // core.info('Fazendo build...')
                 const output = (0, child_process_1.execSync)(`echo "teste" > teste.txt && cat teste.txt && ls`);
                 core.info(output.toString('utf-8'));
+                yield cache.saveCache(paths, key);
             }
         }
         catch (error) {

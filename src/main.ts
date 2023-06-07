@@ -28,6 +28,8 @@ async function run(): Promise<void> {
       const output = execSync(`echo "teste" > teste.txt && cat teste.txt && ls`)
 
       core.info(output.toString('utf-8'))
+
+      await cache.saveCache(paths, key)
     }
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
