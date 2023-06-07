@@ -4,7 +4,7 @@ import * as cache from '@actions/cache'
 // import {NodeSSH} from 'node-ssh'
 // import path from 'path'
 
-import {execSync} from 'child_process'
+import {exec, execSync} from 'child_process'
 async function run(): Promise<void> {
   try {
     //Define o caminho para o diretório do projeto EasyChannel
@@ -41,28 +41,28 @@ async function run(): Promise<void> {
     } else {
       core.info('Fazendo build...')
 
-      //   const output = exec(`cd assets/js/react && yarn && npm run build`)
+      const output = exec(`cd assets/js/react && yarn && npm run build`)
 
-      //   output.stdout?.on('data', stdout => {
-      //     core.info(stdout)
-      //   })
-      //   output.stderr?.on('data', stdout => {
-      //     core.info(stdout)
-      //   })
+      output.stdout?.on('data', stdout => {
+        core.info(stdout)
+      })
+      output.stderr?.on('data', stdout => {
+        core.info(stdout)
+      })
 
-      //   await new Promise(resolve => {
-      //     output.on('close', () => {
-      //       resolve(null)
-      //     })
-      //   })
+      await new Promise(resolve => {
+        output.on('close', () => {
+          resolve(null)
+        })
+      })
 
-      //   core.info('Build termiada')
+      core.info('Build termiada')
 
-      //   const lsOutput = execSync(`ls ${reactBuildPath}`)
+      const lsOutput = execSync(`ls ${reactBuildPath}`)
 
-      //   core.info(lsOutput.toString('utf-8'))
+      core.info(lsOutput.toString('utf-8'))
 
-      //   await cache.saveCache(paths, key, undefined, true)
+      await cache.saveCache(paths, key, undefined, true)
     }
 
     // Navega até o diretório do projeto EasyChannel
