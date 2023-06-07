@@ -51,7 +51,7 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             //Define o caminho para o diretório do projeto EasyChannel
-            const reactBuildPath = 'assets/js/react/dist';
+            const reactBuildPath = 'assets/js/react';
             //Define o caminho para o diretório do projeto EasyChannel
             // Use o diretório em cache para outras etapas do fluxo de trabalho
             // ...

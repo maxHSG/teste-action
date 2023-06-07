@@ -11,7 +11,7 @@ async function run(): Promise<void> {
   try {
     //Define o caminho para o diretório do projeto EasyChannel
 
-    const reactBuildPath = 'assets/js/react/dist'
+    const reactBuildPath = 'assets/js/react'
 
     //Define o caminho para o diretório do projeto EasyChannel
 
