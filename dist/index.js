@@ -73,9 +73,25 @@ function run() {
             }
             // let cachePath = toolsCache.find('meu-cache-key', '1')
             if (!(yield cache.restoreCache(paths, key))) {
+                try {
+                    core.info('Iniciando o ls1');
+                    const output = (0, child_process_1.execSync)('ls assets/js/react/dist/');
+                    core.info(output.toString('utf-8'));
+                }
+                catch (error) {
+                    core.info('Erro ao fazer o ls');
+                }
                 // Cache não encontrado, faz a build ou processo necessário
                 // ...
                 (0, child_process_1.execSync)("mkdir -p assets/js/react/dist && echo 'teste' > teste.txt ");
+                try {
+                    core.info('Iniciando o ls2');
+                    const output = (0, child_process_1.execSync)('ls assets/js/react/dist/');
+                    core.info(output.toString('utf-8'));
+                }
+                catch (error) {
+                    core.info('Erro ao fazer o ls');
+                }
                 // Salva o diretório em cache
                 yield cache.saveCache(paths, key);
             }
