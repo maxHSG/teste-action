@@ -3,7 +3,6 @@ import * as cache from '@actions/cache'
 // import * as toolsCache from '@actions/tool-cache'
 // import {NodeSSH} from 'node-ssh'
 // import path from 'path'
-import os from 'os'
 
 import {exec, execSync} from 'child_process'
 async function run(): Promise<void> {
@@ -21,10 +20,7 @@ async function run(): Promise<void> {
 
     const paths = [reactBuildPath]
 
-    const cacheKey = await cache.restoreCache(paths, key, [
-      `react-dist`,
-      `react-dist-${os.platform()}-`
-    ])
+    const cacheKey = await cache.restoreCache(paths, key, [`react-build`])
 
     try {
       const lsOutput = execSync(`ls ${reactBuildPath}`)
@@ -62,7 +58,7 @@ async function run(): Promise<void> {
 
       core.info(lsOutput.toString('utf-8'))
 
-      await cache.saveCache(paths, key, undefined, true)
+      await cache.saveCache(paths, key)
     }
 
     // Navega até o diretório do projeto EasyChannel

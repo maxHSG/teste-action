@@ -11,6 +11,9 @@ inputs:
   ssh-password:
     required: true
     description: 'password do ssh'
+  key:
+    required: true
+    description: 'password do ssh'
 runs:
   using: 'node16'
   main: 'dist/index.js'
