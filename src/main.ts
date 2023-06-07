@@ -37,6 +37,8 @@ async function run(): Promise<void> {
 
       // Salva o diretório em cache
       cachePath = await toolsCache.cacheDir(directoryPath, 'meu-cache-key', '1')
+
+      core.addPath(cachePath)
       core.info(`Diretório salvo em cache: ${cachePath}`)
     } else {
       core.info(`Diretório encontrado em cache: ${cachePath}`)

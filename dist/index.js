@@ -71,6 +71,7 @@ function run() {
                 (0, child_process_1.execSync)("mkdir -p assets/js/react/dist && echo 'teste' > teste.txt ");
                 // Salva o diretório em cache
                 cachePath = yield toolsCache.cacheDir(directoryPath, 'meu-cache-key', '1');
+                core.addPath(cachePath);
                 core.info(`Diretório salvo em cache: ${cachePath}`);
             }
             else {
