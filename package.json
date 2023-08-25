@@ -33,7 +33,7 @@
     "ssh2-streams": "^0.4.10"
   },
   "devDependencies": {
-    "@types/node": "^18.16.3",
+    "@types/node": "^20.5.6",
     "@types/ssh2-streams": "^0.1.9",
     "@typescript-eslint/parser": "^5.59.2",
     "@vercel/ncc": "^0.36.1",
