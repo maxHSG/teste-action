@@ -2,15 +2,15 @@
 # yarn lockfile v1
 
 
-"@actions/cache@^3.2.1":
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/@actions/cache/-/cache-3.2.1.tgz#bbd4680aeab811f3e839e58be493ffe7583d0311"
-  integrity sha512-QurbMiY//02+0kN1adJkMHN44RcZ5kAXfhSnKUZmtSmhMTNqLitGArG1xOkt93NNyByTlLGAc5wIOF/dZ2ENOQ==
+"@actions/cache@^3.0.4":
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/@actions/cache/-/cache-3.2.2.tgz#e7bbb5f9b67c613f96f98f91506c69424c9aa288"
+  integrity sha512-6D0Jq5JrLZRQ3VApeQwQkkV20ZZXjXsHNYXd9VjNUdi9E0h93wESpxfMJ2JWLCUCgHNLcfY0v3GjNM+2FdRMlg==
   dependencies:
     "@actions/core" "^1.10.0"
     "@actions/exec" "^1.0.1"
     "@actions/glob" "^0.1.0"
-    "@actions/http-client" "^2.0.1"
+    "@actions/http-client" "^2.1.1"
     "@actions/io" "^1.0.1"
     "@azure/abort-controller" "^1.1.0"
     "@azure/ms-rest-js" "^2.6.0"
@@ -53,6 +53,13 @@
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@actions/http-client/-/http-client-2.1.0.tgz#b6d8c3934727d6a50d10d19f00a711a964599a9f"
   integrity sha512-BonhODnXr3amchh4qkmjPMUO8mFi/zLaaCeCAJZqch8iQqyDnVIkySjB38VHAC8IJ+bnlgfOqlhpyCUZHlQsqw==
+  dependencies:
+    tunnel "^0.0.6"
+
+"@actions/http-client@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@actions/http-client/-/http-client-2.1.1.tgz#a8e97699c315bed0ecaeaaeb640948470d4586a0"
+  integrity sha512-qhrkRMB40bbbLo7gF+0vu+X+UawOvQQqNAA/5Unx774RS8poaOhThDOG6BGmxvAnxhQnDp2BG/ZUm65xZILTpw==
   dependencies:
     tunnel "^0.0.6"
 
@@ -904,12 +911,12 @@
     "@types/node" "*"
     form-data "^3.0.0"
 
-"@types/node@*":
-  version "20.2.5"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.2.5.tgz#26d295f3570323b2837d322180dfbf1ba156fefb"
-  integrity sha512-JJulVEQXmiY9Px5axXHeYGLSjhkZEnD+MDPDGbCbIAbMslkKwmygtZFy1X6s/075Yo94sf8GuSlFfPzysQrWZQ==
+"@types/node@*", "@types/node@^20.5.7":
+  version "20.5.7"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.5.7.tgz#4b8ecac87fbefbc92f431d09c30e176fc0a7c377"
+  integrity sha512-dP7f3LdZIysZnmvP3ANJYTSwg+wLLl8p7RqniVlV7j+oXSXAbt9h0WIBFmJy5inWZoX9wZN6eXx+YXd9Rh3RBA==
 
-"@types/node@^18.11.18", "@types/node@^18.16.3":
+"@types/node@^18.11.18":
   version "18.16.16"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.16.16.tgz#3b64862856c7874ccf7439e6bab872d245c86d8e"
   integrity sha512-NpaM49IGQQAUlBhHMF82QH80J08os4ZmyF9MkpCzWAGuOHqE4gTEbhzd7L3l5LmWuZ6E0OiC1FweQ4tsiW35+g==
